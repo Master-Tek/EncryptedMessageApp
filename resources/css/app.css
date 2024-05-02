@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS for custom backgrounds and alignment */
+.bg-light-green {
+    background-color: #c3e6cb; /* Light green background */
+}
+
+.bg-pearl-white {
+    background-color: #e4d8c0; /* Pearl white background */
+}
+
+.text-right {
+    text-align: right; /* Right-aligned text */
+}
+
+.bg-pearl-red {
+    background-color: #f08080; /* Light red / pearl red */
+}
+
+.text-pearl-blue {
+    color: #6a5acd; /* Example pearl blue color */
+}
+
+.text-left {
+    text-align: left; /* Left-aligned text */
+}
