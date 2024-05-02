@@ -27,7 +27,7 @@ class CleanupMessages extends Command
      */
     public function handle()
     {
-        $softDeletedCount = Message::where('read_at', '<', Carbon::now()->subMinutes(1))
+        $softDeletedCount = Message::where('read_at', '<', Carbon::now()->subMinutes(5))
                ->whereNull('deleted_at')
                ->delete();
                

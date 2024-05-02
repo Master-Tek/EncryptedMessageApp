@@ -10,11 +10,11 @@
                     </div>
 
                     <input type="hidden" id="authUserId" value="{{ auth()->id() }}">
-                    <input type="hidden" id="recipientId" value="{{ $recipientId }}">
+                    <input type="hidden" id="recipientId" value="{{ $recipient->id }}">
 
                     <!-- Message Window Content -->
                     <div class="bg-white p-4 rounded shadow">
-                        <h1 class="text-xl font-bold mb-4">Message Window</h1>
+                        <h1 class="text-xl font-bold mb-4">Chat with {{$recipient->name}}</h1>
 
                         <div id="messageDisplay" class="mb-4 h-96 overflow-y-scroll border p-2 bg-gray-100 rounded flex flex-col gap-5">
                             <!-- Empty wrapper -->
@@ -23,7 +23,7 @@
                         <!-- Message Input -->
                         <div class="w-full">
                             <div class="relative">
-                                <form onsubmit="Messages.sendMessage(event, false, {{$recipientId}})">
+                                <form onsubmit="Messages.sendMessage(event, false, {{$recipient->id}})">
                                     <input type="text" id="messageInput" placeholder="Write your message..." class="border border-gray-300 rounded-lg w-full px-4 py-2 focus:outline-none focus:border-blue-500">
                                     <button type="submit" class="absolute right-0 top-0 mt-2 mr-4 text-gray-600 hover:text-gray-800">
                                         <i class="fa fa-caret-right"></i>

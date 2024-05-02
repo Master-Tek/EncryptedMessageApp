@@ -88,19 +88,19 @@ class ConversationsController extends Controller
     public function show(Request $request)
     {
         $currentUserId = auth()->id();
-        $recipientId = $request->route('id');
+        $recipient = User::find($request->route('id'));
 
         // Check if there is any conversation between the current user and $recipientId
-        if (!Message::conversationExists($currentUserId, $recipientId)) {
+        if (!Message::conversationExists($currentUserId, $recipient->id)) {
             return Redirect::route('conversations.new');
         }
 
         Message::where('receiver_id', $currentUserId)
-           ->where('sender_id', $recipientId)
+           ->where('sender_id', $recipient->id)
            ->whereNull('read_at')
            ->update(['read_at' => Carbon::now()]);
         
-        return view('conversations.show', ['recipientId' => $recipientId]);
+        return view('conversations.show', ['recipient' => $recipient]);
     }
 
     /**
