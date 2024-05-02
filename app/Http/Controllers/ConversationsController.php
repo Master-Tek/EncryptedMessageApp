@@ -11,6 +11,16 @@ use Illuminate\Support\Facades\DB;
 
 class ConversationsController extends Controller
 {
+    /**
+     * Retrieves and displays a list of conversations for the current user.
+     *
+     * This method queries the Message model to find all conversations involving the current user,
+     * identified either as the sender or receiver. It retrieves the last message ID and counterpart user ID for each conversation,
+     * groups the messages by counterpart ID, and calculates unread message counts. The data is then passed to the view
+     * for presentation.
+     *
+     * @return \Illuminate\View\View Returns a view with the conversations list and the current user ID.
+     */
     public function index()
     {
         $currentUserId = auth()->id();
@@ -44,6 +54,16 @@ class ConversationsController extends Controller
         return view('conversations.index', ['conversations' => $conversations, 'currentUserId' => $currentUserId]);
     }
 
+    /**
+     * Displays the view for creating a new conversation.
+     *
+     * Retrieves and lists all users except the currently authenticated user as potential recipients
+     * for a new message. This method prepares the data needed to populate the form where a user
+     * can select another user to start a conversation.
+     *
+     * @return \Illuminate\View\View Returns a view with the list of potential message recipients and
+     *         the ID of the current user.
+     */
     public function new()
     {
         $recipients = User::select('id', 'name')
@@ -52,6 +72,19 @@ class ConversationsController extends Controller
         return view('conversations.new', ['recipients' => $recipients, 'currentUserId' => auth()->id()]);
     }
 
+    /**
+     * Displays a specific conversation between the authenticated user and a selected recipient.
+     *
+     * This method first checks if a conversation exists between the current authenticated user
+     * and the recipient identified by the 'id' parameter in the request. If no conversation exists,
+     * it redirects the user to a new conversation creation page. Otherwise, it marks any unread
+     * messages in the conversation as read and displays the conversation.
+     *
+     * @param  \Illuminate\Http\Request  $request  The request object, containing the 'id' of the recipient.
+     * @return \Illuminate\Http\Response           Returns a view with the conversation details or
+     *                                             redirects to the new conversation page if no existing
+     *                                             conversation is found.
+     */
     public function show(Request $request)
     {
         $currentUserId = auth()->id();
@@ -70,6 +103,16 @@ class ConversationsController extends Controller
         return view('conversations.show', ['recipientId' => $recipientId]);
     }
 
+    /**
+     * Checks if a conversation exists between the authenticated user and the specified recipient.
+     *
+     * This method retrieves the current user's ID and the recipient's ID from the request,
+     * and checks if there is any conversation between these two users. The result is returned
+     * as a JSON response indicating whether the conversation exists.
+     *
+     * @param  \Illuminate\Http\Request  $request  The request object, which should contain the recipient's ID as part of the route.
+     * @return \Illuminate\Http\JsonResponse       Returns a JSON response with a boolean indicating if the conversation exists.
+     */
     public function exists(Request $request)
     {
         $currentUserId = auth()->id();

@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class MessageController extends Controller
 {
+    /**
+     * Get messages between the authenticated user and another user.
+     *
+     * @param  \Illuminate\Http\Request
+     *         - 'receiver_id': int, the another user.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
         $currentUserId = auth()->id();
@@ -28,24 +35,32 @@ class MessageController extends Controller
         return response()->json($messages);
     }
 
+    /**
+     * Creates a new message and saves it to the database.
+     *
+     * @param  \Illuminate\Http\Request
+     *         - 'content': string, the text content of the message.
+     *         - 'receiver_id': int, the identifier of the user who is to receive the message.
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function createMessage(Request $request)
     {
-             
         $message = new Message();
         $message->content = $request->input('content');
-        $message->sender_id = auth()->id(); // Get current user ID
-        $message->receiver_id = $request->input('receiver_id'); // Receiver ID
+        $message->sender_id = auth()->id(); // Assumes the sender is the currently authenticated user
+        $message->receiver_id = $request->input('receiver_id'); // Receiver ID from the request
         $message->save();
 
         return response()->json([
             'status' => 'success',
-        ]);
+            'message_id' => $message->id,
+            'content' => $message->content,
+        ], 200);
     }
 
     /**
      * Soft delete a specific message.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param  int  $messageId
      * @return \Illuminate\Http\JsonResponse
      */

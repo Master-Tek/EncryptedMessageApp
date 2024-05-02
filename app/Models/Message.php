@@ -10,8 +10,7 @@ use App\Helpers\EncryptionHelper;
 
 class Message extends Model
 {
-    use HasFactory;
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     /**
      * Check if a conversation exists between two users.
@@ -47,10 +46,6 @@ class Message extends Model
     {
         $key = env('APP_KEY');
         return EncryptionHelper::decryptText($value, $key);
-    }
-
-    public function getHumanizeCreatedAt() {
-        return Carbon::parse($this->created_at)->diffForHumans();
     }
 
     public function sender()

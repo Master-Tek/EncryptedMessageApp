@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ConversationsController;
@@ -27,11 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // Route to retrieve messages for the current user
-    Route::get('/messages', [MessageController::class, 'index']);
-    Route::post('/messages/create', [MessageController::class, 'createMessage']);
-    Route::post('/messages/markAsRead', [MessageController::class, 'markAsRead']);
+    Route::get('/messages', [MessageController::class, 'index'])->name('messages.index');
+    Route::post('/messages/create', [MessageController::class, 'createMessage'])->name('messages.create');
     Route::delete('/messages/{id}', [MessageController::class, 'softDelete'])->name('messages.softDelete');
-    
     Route::get('/conversations', [ConversationsController::class, 'index'])->name('conversations.index');
     Route::get('/conversations/new',[ConversationsController::class, 'new'])->name('conversations.new');
     Route::get('/conversations/{id}', [ConversationsController::class, 'show'])->name('conversations.show');
