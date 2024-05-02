@@ -5,8 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Carbon\Carbon;
-use App\Helpers\EncryptionHelper;
+use Illuminate\Support\Facades\Crypt;
 
 class Message extends Model
 {
@@ -38,14 +37,12 @@ class Message extends Model
 
     public function setContentAttribute($value)
     {
-        $key = env('APP_KEY');
-        $this->attributes['content'] = EncryptionHelper::encryptText($value, $key);
+        $this->attributes['content'] = Crypt::encryptString($value);
     }
 
     public function getContentAttribute($value)
     {
-        $key = env('APP_KEY');
-        return EncryptionHelper::decryptText($value, $key);
+        return Crypt::decryptString($value);
     }
 
     public function sender()
